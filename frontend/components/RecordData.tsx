@@ -1,6 +1,6 @@
 "use client";
 
-import { Leaf, Cloud, Droplet, Zap, Lock, Loader2 } from "lucide-react";
+import { Leaf, Cloud, Droplet, Zap, Lock, Loader2, AlertCircle, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import { useFhevm } from "@/fhevm/useFhevm";
 import { useInMemoryStorage } from "@/hooks/useInMemoryStorage";
@@ -26,6 +26,8 @@ const RecordData = () => {
   const [selectedDay, setSelectedDay] = useState(7);
   const [selectedYear, setSelectedYear] = useState(2025);
   const [notes, setNotes] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const getDaysInMonth = (month: number, year: number) => {
     return new Date(year, month, 0).getDate();
@@ -62,24 +64,33 @@ const RecordData = () => {
   });
 
   const handleSubmit = () => {
+    setError(null);
+    setSuccess(null);
+
     if (!isConnected) {
-      alert("Please connect your wallet first");
+      setError("Please connect your wallet first");
       return;
     }
 
     if (!value) {
-      alert("Please enter a value");
+      setError("Please enter a value");
       return;
     }
 
     const numValue = parseInt(value, 10);
     if (isNaN(numValue) || numValue <= 0) {
-      alert("Please enter a valid positive number");
+      setError("Please enter a valid positive number");
+      return;
+    }
+
+    if (numValue > 1000000) {
+      setError("Value too large. Please enter a reasonable amount.");
       return;
     }
 
     // Use FHE encryption to increment counter
     fheCounter.incOrDec(numValue);
+    setSuccess("Data encryption and recording initiated successfully!");
   };
 
   return (
@@ -212,6 +223,22 @@ const RecordData = () => {
                   </>
                 )}
               </button>
+
+              {/* Error Message */}
+              {error && (
+                <div className="p-3 rounded-lg bg-red-50 border border-red-200 flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
+                  <p className="text-sm text-red-700">{error}</p>
+                </div>
+              )}
+
+              {/* Success Message */}
+              {success && (
+                <div className="p-3 rounded-lg bg-green-50 border border-green-200 flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                  <p className="text-sm text-green-700">{success}</p>
+                </div>
+              )}
 
               {fheCounter.message && (
                 <div className="p-3 rounded-lg bg-muted/50 border border-border/30">
