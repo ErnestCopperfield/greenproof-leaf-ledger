@@ -63,6 +63,38 @@ const RecordData = () => {
     sameSigner,
   });
 
+  const sanitizeInput = (input: string): string => {
+    return input.trim().replace(/[<>\"'&]/g, '');
+  };
+
+  const validateNumericInput = (input: string): { isValid: boolean; value?: number; error?: string } => {
+    const sanitized = sanitizeInput(input);
+    
+    if (!sanitized) {
+      return { isValid: false, error: "Please enter a value" };
+    }
+
+    const numValue = parseFloat(sanitized);
+    
+    if (isNaN(numValue)) {
+      return { isValid: false, error: "Please enter a valid number" };
+    }
+
+    if (numValue <= 0) {
+      return { isValid: false, error: "Value must be greater than zero" };
+    }
+
+    if (numValue > 1000000) {
+      return { isValid: false, error: "Value too large. Maximum allowed is 1,000,000" };
+    }
+
+    if (numValue !== Math.floor(numValue)) {
+      return { isValid: false, error: "Please enter a whole number" };
+    }
+
+    return { isValid: true, value: Math.floor(numValue) };
+  };
+
   const handleSubmit = () => {
     setError(null);
     setSuccess(null);
@@ -72,24 +104,20 @@ const RecordData = () => {
       return;
     }
 
-    if (!value) {
-      setError("Please enter a value");
+    const validation = validateNumericInput(value);
+    if (!validation.isValid) {
+      setError(validation.error || "Invalid input");
       return;
     }
 
-    const numValue = parseInt(value, 10);
-    if (isNaN(numValue) || numValue <= 0) {
-      setError("Please enter a valid positive number");
-      return;
-    }
-
-    if (numValue > 1000000) {
-      setError("Value too large. Please enter a reasonable amount.");
+    const sanitizedNotes = sanitizeInput(notes);
+    if (sanitizedNotes.length > 500) {
+      setError("Notes must be less than 500 characters");
       return;
     }
 
     // Use FHE encryption to increment counter
-    fheCounter.incOrDec(numValue);
+    fheCounter.incOrDec(validation.value!);
     setSuccess("Data encryption and recording initiated successfully!");
   };
 
