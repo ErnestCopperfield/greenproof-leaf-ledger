@@ -200,7 +200,9 @@ export const useFHECounter = (parameters: {
         setIsRefreshing(false);
       })
       .catch((e) => {
-        setMessage("FHECounter.getCount() call failed! error=" + e);
+        console.error("[useFHECounter] getCount() failed:", e);
+        const errorMsg = e?.reason || e?.message || "Unknown error occurred";
+        setMessage(`Failed to fetch counter: ${errorMsg}`);
 
         isRefreshingRef.current = false;
         setIsRefreshing(false);
@@ -343,6 +345,10 @@ export const useFHECounter = (parameters: {
         setMessage(
           "Count handle clear value is " + clearCountRef.current.clear
         );
+      } catch (error) {
+        console.error("[useFHECounter] Decryption failed:", error);
+        const errorMsg = error instanceof Error ? error.message : "Unknown decryption error";
+        setMessage(`Decryption failed: ${errorMsg}`);
       } finally {
         isDecryptingRef.current = false;
         setIsDecrypting(false);
@@ -457,8 +463,10 @@ export const useFHECounter = (parameters: {
           }
 
           refreshCountHandle();
-        } catch {
-          setMessage(`${opMsg} Failed!`);
+        } catch (error) {
+          console.error(`[useFHECounter] ${opMsg} failed:`, error);
+          const errorMsg = error instanceof Error ? error.message : "Unknown error";
+          setMessage(`${opMsg} failed: ${errorMsg}`);
         } finally {
           isIncOrDecRef.current = false;
           setIsIncOrDec(false);
