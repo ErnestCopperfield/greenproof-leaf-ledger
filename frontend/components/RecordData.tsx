@@ -236,13 +236,18 @@ const RecordData = () => {
 
               <button 
                 onClick={handleSubmit}
-                disabled={!fheCounter.canIncOrDec}
+                disabled={!fheCounter.canIncOrDec || !isConnected}
                 className="w-full py-3 rounded-lg bg-forest hover:bg-forest-light text-primary-foreground transition-smooth shadow-eco disabled:opacity-50 font-medium flex items-center justify-center gap-2"
               >
                 {fheCounter.isIncOrDec ? (
                   <>
                     <Loader2 className="h-5 w-5 animate-spin" />
                     Encrypting & Recording...
+                  </>
+                ) : !isConnected ? (
+                  <>
+                    <AlertCircle className="h-5 w-5" />
+                    Connect Wallet First
                   </>
                 ) : (
                   <>

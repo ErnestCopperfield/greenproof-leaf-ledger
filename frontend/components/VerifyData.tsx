@@ -114,9 +114,16 @@ const VerifyData = () => {
                     FHE Encrypted
                   </span>
                 </div>
-                <p className="font-mono text-sm text-foreground break-all">
-                  {fheCounter.handle ?? "No data yet"}
-                </p>
+                {fheCounter.isRefreshing ? (
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">Loading encrypted data...</span>
+                  </div>
+                ) : (
+                  <p className="font-mono text-sm text-foreground break-all">
+                    {fheCounter.handle ?? "No data yet"}
+                  </p>
+                )}
               </div>
 
               {/* Decrypted Value */}
