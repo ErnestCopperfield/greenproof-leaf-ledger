@@ -6,8 +6,9 @@ import { useFhevm } from "@/fhevm/useFhevm";
 import { useInMemoryStorage } from "@/hooks/useInMemoryStorage";
 import { useMetaMaskEthersSigner } from "@/hooks/metamask/useMetaMaskEthersSigner";
 import { useFHECounter } from "@/hooks/useFHECounter";
+import type { EnvironmentalDataType, ValidationResult, FormData, ComponentState } from "@/types";
 
-const dataTypes = [
+const dataTypes: EnvironmentalDataType[] = [
   { icon: Cloud, label: "CO₂ Reduction", unit: "tons", color: "text-forest" },
   { icon: Zap, label: "Energy Saved", unit: "kWh", color: "text-gold" },
   { icon: Droplet, label: "Water Conserved", unit: "liters", color: "text-blue-500" },

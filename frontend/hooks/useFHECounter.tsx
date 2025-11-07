@@ -26,16 +26,46 @@ import { GenericStringStorage } from "@/fhevm/GenericStringStorage";
 import { FHECounterAddresses } from "@/abi/FHECounterAddresses";
 import { FHECounterABI } from "@/abi/FHECounterABI";
 
-export type ClearValueType = {
+export interface ClearValueType {
   handle: string;
   clear: string | bigint | boolean;
-};
-type FHECounterInfoType = {
+}
+
+export interface FHECounterInfoType {
   abi: typeof FHECounterABI.abi;
   address?: `0x${string}`;
   chainId?: number;
   chainName?: string;
-};
+}
+
+export interface UseFHECounterParams {
+  instance: FhevmInstance | undefined;
+  fhevmDecryptionSignatureStorage: GenericStringStorage;
+  eip1193Provider: ethers.Eip1193Provider | undefined;
+  chainId: number | undefined;
+  ethersSigner: ethers.JsonRpcSigner | undefined;
+  ethersReadonlyProvider: ethers.ContractRunner | undefined;
+  sameChain: RefObject<(chainId: number | undefined) => boolean>;
+  sameSigner: RefObject<(ethersSigner: ethers.JsonRpcSigner | undefined) => boolean>;
+}
+
+export interface UseFHECounterReturn {
+  contractAddress?: string;
+  canDecrypt: boolean;
+  canGetCount: boolean | undefined;
+  canIncOrDec: boolean;
+  incOrDec: (value: number) => void;
+  decryptCountHandle: () => void;
+  refreshCountHandle: () => void;
+  isDecrypted: string | boolean | undefined;
+  message: string;
+  clear?: string | bigint | boolean;
+  handle?: string;
+  isDecrypting: boolean;
+  isRefreshing: boolean;
+  isIncOrDec: boolean;
+  isDeployed?: boolean;
+}
 
 /**
  * Resolves FHECounter contract metadata for the given EVM `chainId`.
@@ -81,18 +111,7 @@ function getFHECounterByChainId(
  *  - "Increment" button: allows you to increment the FHECounter count handle using FHE operations.
  *  - "Decrement" button: allows you to decrement the FHECounter count handle using FHE operations.
  */
-export const useFHECounter = (parameters: {
-  instance: FhevmInstance | undefined;
-  fhevmDecryptionSignatureStorage: GenericStringStorage;
-  eip1193Provider: ethers.Eip1193Provider | undefined;
-  chainId: number | undefined;
-  ethersSigner: ethers.JsonRpcSigner | undefined;
-  ethersReadonlyProvider: ethers.ContractRunner | undefined;
-  sameChain: RefObject<(chainId: number | undefined) => boolean>;
-  sameSigner: RefObject<
-    (ethersSigner: ethers.JsonRpcSigner | undefined) => boolean
-  >;
-}) => {
+export const useFHECounter = (parameters: UseFHECounterParams): UseFHECounterReturn => {
   const {
     instance,
     fhevmDecryptionSignatureStorage,
