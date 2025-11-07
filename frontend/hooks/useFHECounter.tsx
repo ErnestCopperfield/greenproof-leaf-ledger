@@ -211,7 +211,19 @@ export const useFHECounter = (parameters: {
 
   // Auto refresh the count handle
   useEffect(() => {
-    refreshCountHandle();
+    let isMounted = true;
+    
+    const refresh = async () => {
+      if (isMounted) {
+        refreshCountHandle();
+      }
+    };
+    
+    refresh();
+    
+    return () => {
+      isMounted = false;
+    };
   }, [refreshCountHandle]);
 
   //////////////////////////////////////////////////////////////////////////////

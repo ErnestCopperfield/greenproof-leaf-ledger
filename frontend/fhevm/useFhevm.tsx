@@ -134,8 +134,10 @@ export function useFhevm(parameters: {
       })
         .then((i) => {
           console.log(`[useFhevm] createFhevmInstance created!`);
-          //console.log(`completed (runId=${thisRunId})...`);
-          if (thisSignal.aborted) return;
+          if (thisSignal.aborted) {
+            console.log(`[useFhevm] Instance creation aborted`);
+            return;
+          }
 
           // is there a edge case where the assert below would fail ?
           // it's not possible to have a _providerRef modified without a prior abort
