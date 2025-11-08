@@ -1,7 +1,7 @@
 "use client";
 
 import { Leaf, Cloud, Droplet, Zap, Lock, Loader2, AlertCircle, CheckCircle } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useFhevm } from "@/fhevm/useFhevm";
 import { useInMemoryStorage } from "@/hooks/useInMemoryStorage";
 import { useMetaMaskEthersSigner } from "@/hooks/metamask/useMetaMaskEthersSigner";
@@ -30,9 +30,9 @@ const RecordData = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const getDaysInMonth = (month: number, year: number) => {
+  const getDaysInMonth = useCallback((month: number, year: number) => {
     return new Date(year, month, 0).getDate();
-  };
+  }, []);
 
   const { storage: fhevmDecryptionSignatureStorage } = useInMemoryStorage();
   const {
@@ -64,11 +64,11 @@ const RecordData = () => {
     sameSigner,
   });
 
-  const sanitizeInput = (input: string): string => {
+  const sanitizeInput = useCallback((input: string): string => {
     return input.trim().replace(/[<>\"'&]/g, '');
-  };
+  }, []);
 
-  const validateNumericInput = (input: string): { isValid: boolean; value?: number; error?: string } => {
+  const validateNumericInput = useCallback((input: string): ValidationResult => {
     const sanitized = sanitizeInput(input);
     
     if (!sanitized) {
@@ -94,9 +94,9 @@ const RecordData = () => {
     }
 
     return { isValid: true, value: Math.floor(numValue) };
-  };
+  }, [sanitizeInput]);
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     setError(null);
     setSuccess(null);
 
@@ -120,7 +120,15 @@ const RecordData = () => {
     // Use FHE encryption to increment counter
     fheCounter.incOrDec(validation.value!);
     setSuccess("Data encryption and recording initiated successfully!");
-  };
+  }, [isConnected, validateNumericInput, value, notes, sanitizeInput, fheCounter]);
+
+  const availableDays = useMemo(() => {
+    return Array.from({ length: getDaysInMonth(selectedMonth, selectedYear) }, (_, i) => i + 1);
+  }, [selectedMonth, selectedYear, getDaysInMonth]);
+
+  const availableYears = useMemo(() => {
+    return [2024, 2025, 2026];
+  }, []);
 
   return (
     <section id="record" className="py-20">
@@ -195,7 +203,7 @@ const RecordData = () => {
                       onChange={(e) => setSelectedDay(Number(e.target.value))}
                       className="w-20 h-12 px-3 text-base border border-border/50 rounded-lg focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20 bg-background"
                     >
-                      {Array.from({ length: getDaysInMonth(selectedMonth, selectedYear) }, (_, i) => i + 1).map((day) => (
+                      {availableDays.map((day) => (
                         <option key={day} value={day}>{day}</option>
                       ))}
                     </select>
@@ -204,7 +212,7 @@ const RecordData = () => {
                       onChange={(e) => setSelectedYear(Number(e.target.value))}
                       className="w-24 h-12 px-3 text-base border border-border/50 rounded-lg focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20 bg-background"
                     >
-                      {[2024, 2025, 2026].map((year) => (
+                      {availableYears.map((year) => (
                         <option key={year} value={year}>{year}</option>
                       ))}
                     </select>
