@@ -9,6 +9,15 @@ import {SepoliaConfig} from "@fhevm/solidity/config/ZamaConfig.sol";
 /// @notice A very basic example contract showing how to work with encrypted data using FHEVM.
 contract FHECounter is SepoliaConfig {
     euint32 private _count;
+    
+    /// @notice Maximum allowed value to prevent overflow
+    uint32 public constant MAX_VALUE = 1000000;
+    
+    /// @notice Event emitted when counter is incremented
+    event CounterIncremented(address indexed user, uint32 timestamp);
+    
+    /// @notice Event emitted when counter is decremented
+    event CounterDecremented(address indexed user, uint32 timestamp);
 
     /// @notice Returns the current count
     /// @return The current encrypted count
@@ -28,6 +37,8 @@ contract FHECounter is SepoliaConfig {
 
         FHE.allowThis(_count);
         FHE.allow(_count, msg.sender);
+        
+        emit CounterIncremented(msg.sender, uint32(block.timestamp));
     }
 
     /// @notice Decrements the counter by a specified encrypted value.
@@ -42,5 +53,7 @@ contract FHECounter is SepoliaConfig {
 
         FHE.allowThis(_count);
         FHE.allow(_count, msg.sender);
+        
+        emit CounterDecremented(msg.sender, uint32(block.timestamp));
     }
 }

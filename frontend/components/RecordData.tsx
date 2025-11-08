@@ -154,7 +154,9 @@ const RecordData = () => {
                     <button
                       key={index}
                       onClick={() => setSelectedType(index)}
-                      className={`p-4 rounded-lg border-2 transition-smooth hover:scale-105 ${
+                      aria-pressed={selectedType === index}
+                      aria-label={`Select ${type.label} data type`}
+                      className={`p-4 rounded-lg border-2 transition-smooth hover:scale-105 focus:outline-none focus:ring-2 focus:ring-forest/50 ${
                         selectedType === index
                           ? "border-forest bg-forest/5 shadow-eco"
                           : "border-border hover:border-forest/30"
@@ -192,6 +194,7 @@ const RecordData = () => {
                     <select
                       value={selectedMonth}
                       onChange={(e) => setSelectedMonth(Number(e.target.value))}
+                      aria-label="Select month"
                       className="flex-1 h-12 px-3 text-base border border-border/50 rounded-lg focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20 bg-background"
                     >
                       {months.map((month, index) => (
@@ -201,6 +204,7 @@ const RecordData = () => {
                     <select
                       value={selectedDay}
                       onChange={(e) => setSelectedDay(Number(e.target.value))}
+                      aria-label="Select day"
                       className="w-20 h-12 px-3 text-base border border-border/50 rounded-lg focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20 bg-background"
                     >
                       {availableDays.map((day) => (
@@ -210,6 +214,7 @@ const RecordData = () => {
                     <select
                       value={selectedYear}
                       onChange={(e) => setSelectedYear(Number(e.target.value))}
+                      aria-label="Select year"
                       className="w-24 h-12 px-3 text-base border border-border/50 rounded-lg focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20 bg-background"
                     >
                       {availableYears.map((year) => (
@@ -268,16 +273,24 @@ const RecordData = () => {
 
               {/* Error Message */}
               {error && (
-                <div className="p-3 rounded-lg bg-red-50 border border-red-200 flex items-center gap-2">
-                  <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
+                <div 
+                  role="alert" 
+                  aria-live="polite"
+                  className="p-3 rounded-lg bg-red-50 border border-red-200 flex items-center gap-2"
+                >
+                  <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" aria-hidden="true" />
                   <p className="text-sm text-red-700">{error}</p>
                 </div>
               )}
 
               {/* Success Message */}
               {success && (
-                <div className="p-3 rounded-lg bg-green-50 border border-green-200 flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                <div 
+                  role="status" 
+                  aria-live="polite"
+                  className="p-3 rounded-lg bg-green-50 border border-green-200 flex items-center gap-2"
+                >
+                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" aria-hidden="true" />
                   <p className="text-sm text-green-700">{success}</p>
                 </div>
               )}
