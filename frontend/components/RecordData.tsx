@@ -1,18 +1,32 @@
 "use client";
 
-import { Leaf, Cloud, Droplet, Zap, Lock, Loader2, AlertCircle, CheckCircle } from "lucide-react";
+import { Leaf, Cloud, Droplet, Zap, Lock, Loader2, AlertCircle, CheckCircle, Sparkles, Info } from "lucide-react";
 import { useState, useMemo, useCallback } from "react";
 import { useFhevm } from "@/fhevm/useFhevm";
 import { useInMemoryStorage } from "@/hooks/useInMemoryStorage";
 import { useMetaMaskEthersSigner } from "@/hooks/metamask/useMetaMaskEthersSigner";
 import { useFHECounter } from "@/hooks/useFHECounter";
-import type { EnvironmentalDataType, ValidationResult, FormData, ComponentState } from "@/types";
+
+interface EnvironmentalDataType {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  unit: string;
+  color: string;
+  bgColor: string;
+  textColor: string;
+}
+
+interface ValidationResult {
+  isValid: boolean;
+  value?: number;
+  error?: string;
+}
 
 const dataTypes: EnvironmentalDataType[] = [
-  { icon: Cloud, label: "CO₂ Reduction", unit: "tons", color: "text-forest" },
-  { icon: Zap, label: "Energy Saved", unit: "kWh", color: "text-gold" },
-  { icon: Droplet, label: "Water Conserved", unit: "liters", color: "text-blue-500" },
-  { icon: Leaf, label: "Waste Reduced", unit: "kg", color: "text-earth" },
+  { icon: Cloud, label: "CO₂ Reduction", unit: "tons", color: "from-emerald-500 to-green-600", bgColor: "bg-emerald-500/10", textColor: "text-emerald-600" },
+  { icon: Zap, label: "Energy Saved", unit: "kWh", color: "from-yellow-500 to-orange-500", bgColor: "bg-yellow-500/10", textColor: "text-yellow-600" },
+  { icon: Droplet, label: "Water Conserved", unit: "liters", color: "from-blue-500 to-cyan-500", bgColor: "bg-blue-500/10", textColor: "text-blue-600" },
+  { icon: Leaf, label: "Waste Reduced", unit: "kg", color: "from-lime-500 to-green-500", bgColor: "bg-lime-500/10", textColor: "text-lime-600" },
 ];
 
 const months = [
@@ -117,7 +131,6 @@ const RecordData = () => {
       return;
     }
 
-    // Use FHE encryption to increment counter
     fheCounter.incOrDec(validation.value!);
     setSuccess("Data encryption and recording initiated successfully!");
   }, [isConnected, validateNumericInput, value, notes, sanitizeInput, fheCounter]);
@@ -130,12 +143,25 @@ const RecordData = () => {
     return [2024, 2025, 2026];
   }, []);
 
+  const currentType = dataTypes[selectedType];
+
   return (
-    <section id="record" className="py-20">
-      <div className="container">
+    <section id="record" className="py-24 relative">
+      {/* 背景装饰 */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-green-500/5 to-transparent rounded-full blur-3xl" />
+      </div>
+
+      <div className="container mx-auto px-4 relative">
+        {/* 标题区域 */}
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground">
-            Record Your Impact
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-forest mb-4">
+            <Sparkles className="h-4 w-4 text-green-600" />
+            <span className="text-sm font-medium">FHE Encrypted Recording</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold">
+            <span className="text-foreground">Record Your </span>
+            <span className="text-gradient-forest">Impact</span>
           </h2>
           <p className="text-lg text-muted-foreground">
             Enter your verified environmental data to create an encrypted, blockchain-verified record
@@ -143,10 +169,12 @@ const RecordData = () => {
         </div>
 
         <div className="max-w-4xl mx-auto">
-          <div className="p-8 shadow-card border border-border/50 bg-card rounded-lg">
-            <div className="space-y-8">
+          <div className="card-eco p-8 md:p-10">
+            <div className="space-y-10">
+              {/* 数据类型选择 */}
               <div>
-                <label className="text-base font-semibold mb-4 block">
+                <label className="text-lg font-semibold mb-6 block flex items-center gap-2">
+                  <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white text-sm font-bold">1</span>
                   Select Data Type
                 </label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -156,46 +184,66 @@ const RecordData = () => {
                       onClick={() => setSelectedType(index)}
                       aria-pressed={selectedType === index}
                       aria-label={`Select ${type.label} data type`}
-                      className={`p-4 rounded-lg border-2 transition-smooth hover:scale-105 focus:outline-none focus:ring-2 focus:ring-forest/50 ${
+                      className={`group relative p-5 rounded-2xl border-2 transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-green-500/50 overflow-hidden ${
                         selectedType === index
-                          ? "border-forest bg-forest/5 shadow-eco"
-                          : "border-border hover:border-forest/30"
+                          ? "border-green-500 shadow-eco bg-white"
+                          : "border-transparent bg-white/50 hover:border-green-500/30 hover:bg-white"
                       }`}
                     >
-                      <type.icon className={`h-8 w-8 mx-auto mb-2 ${type.color}`} />
-                      <p className="text-sm font-medium text-center">
+                      {/* 选中指示器 */}
+                      {selectedType === index && (
+                        <div className="absolute top-2 right-2">
+                          <CheckCircle className="h-5 w-5 text-green-500" />
+                        </div>
+                      )}
+                      
+                      <div className={`w-14 h-14 rounded-xl ${type.bgColor} flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform`}>
+                        <type.icon className={`h-7 w-7 ${type.textColor}`} />
+                      </div>
+                      <p className="text-sm font-semibold text-center text-foreground">
                         {type.label}
+                      </p>
+                      <p className="text-xs text-muted-foreground text-center mt-1">
+                        {type.unit}
                       </p>
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
+              {/* 数值和日期输入 */}
+              <div className="grid md:grid-cols-2 gap-8">
                 <div>
-                  <label htmlFor="value" className="text-base font-semibold mb-2 block">
-                    Value ({dataTypes[selectedType].unit})
+                  <label htmlFor="value" className="text-lg font-semibold mb-4 block flex items-center gap-2">
+                    <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white text-sm font-bold">2</span>
+                    Value ({currentType.unit})
                   </label>
-                  <input
-                    id="value"
-                    type="number"
-                    placeholder="0.00"
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    className="w-full h-12 px-4 text-lg border border-border/50 rounded-lg focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20 bg-background"
-                  />
+                  <div className="relative">
+                    <input
+                      id="value"
+                      type="number"
+                      placeholder="Enter amount..."
+                      value={value}
+                      onChange={(e) => setValue(e.target.value)}
+                      className="input-eco text-lg h-14 pr-16"
+                    />
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium">
+                      {currentType.unit}
+                    </span>
+                  </div>
                 </div>
 
                 <div>
-                  <label className="text-base font-semibold mb-2 block">
+                  <label className="text-lg font-semibold mb-4 block flex items-center gap-2">
+                    <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white text-sm font-bold">3</span>
                     Verification Date
                   </label>
-                  <div className="flex gap-2">
+                  <div className="flex gap-3">
                     <select
                       value={selectedMonth}
                       onChange={(e) => setSelectedMonth(Number(e.target.value))}
                       aria-label="Select month"
-                      className="flex-1 h-12 px-3 text-base border border-border/50 rounded-lg focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20 bg-background"
+                      className="input-eco flex-1 h-14"
                     >
                       {months.map((month, index) => (
                         <option key={month} value={index + 1}>{month}</option>
@@ -205,7 +253,7 @@ const RecordData = () => {
                       value={selectedDay}
                       onChange={(e) => setSelectedDay(Number(e.target.value))}
                       aria-label="Select day"
-                      className="w-20 h-12 px-3 text-base border border-border/50 rounded-lg focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20 bg-background"
+                      className="input-eco w-20 h-14"
                     >
                       {availableDays.map((day) => (
                         <option key={day} value={day}>{day}</option>
@@ -215,7 +263,7 @@ const RecordData = () => {
                       value={selectedYear}
                       onChange={(e) => setSelectedYear(Number(e.target.value))}
                       aria-label="Select year"
-                      className="w-24 h-12 px-3 text-base border border-border/50 rounded-lg focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20 bg-background"
+                      className="input-eco w-28 h-14"
                     >
                       {availableYears.map((year) => (
                         <option key={year} value={year}>{year}</option>
@@ -225,9 +273,12 @@ const RecordData = () => {
                 </div>
               </div>
 
+              {/* 备注 */}
               <div>
-                <label htmlFor="notes" className="text-base font-semibold mb-2 block">
-                  Verification Notes (Optional)
+                <label htmlFor="notes" className="text-lg font-semibold mb-4 block flex items-center gap-2">
+                  <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white text-sm font-bold">4</span>
+                  Verification Notes
+                  <span className="text-sm font-normal text-muted-foreground">(Optional)</span>
                 </label>
                 <textarea
                   id="notes"
@@ -235,68 +286,81 @@ const RecordData = () => {
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Add any additional context or verification details..."
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-border/50 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20 transition-smooth bg-background"
+                  className="input-eco resize-none"
                 />
               </div>
 
-              <div className="flex items-center gap-4 p-4 rounded-lg bg-muted/50 border border-border/30">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-forest/10 flex items-center justify-center">
-                  <Leaf className="h-5 w-5 text-forest" />
+              {/* 加密提示 */}
+              <div className="flex items-start gap-4 p-5 rounded-2xl bg-gradient-to-r from-green-500/10 to-emerald-500/5 border border-green-500/20">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg">
+                  <Lock className="h-6 w-6 text-white" />
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  Your data will be encrypted before storage. Only authorized auditors with verification keys can decrypt this information.
-                </p>
+                <div>
+                  <h4 className="font-semibold text-foreground mb-1">🔐 FHE Encryption Active</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Your data will be encrypted using Fully Homomorphic Encryption before storage. 
+                    Only authorized auditors with verification keys can decrypt this information.
+                  </p>
+                </div>
               </div>
 
+              {/* 提交按钮 */}
               <button 
                 onClick={handleSubmit}
                 disabled={!fheCounter.canIncOrDec || !isConnected}
-                className="w-full py-3 rounded-lg bg-forest hover:bg-forest-light text-primary-foreground transition-smooth shadow-eco disabled:opacity-50 font-medium flex items-center justify-center gap-2"
+                className="w-full py-4 rounded-2xl font-semibold text-lg text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-eco hover:shadow-glow"
               >
                 {fheCounter.isIncOrDec ? (
                   <>
-                    <Loader2 className="h-5 w-5 animate-spin" />
+                    <Loader2 className="h-6 w-6 animate-spin" />
                     Encrypting & Recording...
                   </>
                 ) : !isConnected ? (
                   <>
-                    <AlertCircle className="h-5 w-5" />
+                    <AlertCircle className="h-6 w-6" />
                     Connect Wallet First
                   </>
                 ) : (
                   <>
-                    <Lock className="h-5 w-5" />
+                    <Lock className="h-6 w-6" />
                     Encrypt & Record Data
+                    <Sparkles className="h-5 w-5" />
                   </>
                 )}
               </button>
 
-              {/* Error Message */}
+              {/* 错误消息 */}
               {error && (
                 <div 
                   role="alert" 
                   aria-live="polite"
-                  className="p-3 rounded-lg bg-red-50 border border-red-200 flex items-center gap-2"
+                  className="p-4 rounded-xl bg-red-50 border border-red-200 flex items-center gap-3 animate-fadeIn"
                 >
-                  <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" aria-hidden="true" />
-                  <p className="text-sm text-red-700">{error}</p>
+                  <div className="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0">
+                    <AlertCircle className="h-5 w-5 text-red-500" />
+                  </div>
+                  <p className="text-sm text-red-700 font-medium">{error}</p>
                 </div>
               )}
 
-              {/* Success Message */}
+              {/* 成功消息 */}
               {success && (
                 <div 
                   role="status" 
                   aria-live="polite"
-                  className="p-3 rounded-lg bg-green-50 border border-green-200 flex items-center gap-2"
+                  className="p-4 rounded-xl bg-green-50 border border-green-200 flex items-center gap-3 animate-fadeIn"
                 >
-                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" aria-hidden="true" />
-                  <p className="text-sm text-green-700">{success}</p>
+                  <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="h-5 w-5 text-green-500" />
+                  </div>
+                  <p className="text-sm text-green-700 font-medium">{success}</p>
                 </div>
               )}
 
+              {/* 状态消息 */}
               {fheCounter.message && (
-                <div className="p-3 rounded-lg bg-muted/50 border border-border/30">
+                <div className="p-4 rounded-xl glass-forest flex items-center gap-3">
+                  <Info className="h-5 w-5 text-green-600 flex-shrink-0" />
                   <p className="text-sm text-muted-foreground font-mono">
                     {fheCounter.message}
                   </p>

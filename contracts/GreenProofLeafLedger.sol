@@ -2,13 +2,13 @@
 pragma solidity ^0.8.24;
 
 import {FHE, euint32, externalEuint32} from "@fhevm/solidity/lib/FHE.sol";
-import {SepoliaConfig} from "@fhevm/solidity/config/ZamaConfig.sol";
+import {LocalConfig} from "./LocalConfig.sol";
 
 /// @title GreenProof Leaf Ledger - Privacy-Preserving Environmental Impact Tracker
 /// @author GreenProof Team
 /// @notice A privacy-preserving environmental impact tracking system using FHE technology
 /// @dev Records and verifies environmental impact data while maintaining complete privacy
-contract GreenProofLeafLedger is SepoliaConfig {
+contract GreenProofLeafLedger is LocalConfig {
     /// @notice Environmental data categories
     enum DataCategory {
         CO2_REDUCTION,

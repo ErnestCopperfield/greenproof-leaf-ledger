@@ -2,108 +2,124 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 42 25% 96%;
-    --foreground: 150 25% 15%;
+    --background: 140 30% 97%;
+    --foreground: 150 40% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 150 25% 15%;
+    --card-foreground: 150 40% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 150 25% 15%;
+    --popover-foreground: 150 40% 10%;
 
-    --primary: 145 60% 25%;
-    --primary-foreground: 42 80% 95%;
+    --primary: 152 70% 35%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 35 45% 65%;
-    --secondary-foreground: 150 25% 15%;
+    --secondary: 85 45% 50%;
+    --secondary-foreground: 150 40% 10%;
 
-    --muted: 40 20% 88%;
-    --muted-foreground: 150 15% 40%;
+    --muted: 140 20% 92%;
+    --muted-foreground: 150 15% 45%;
 
-    --accent: 45 85% 55%;
-    --accent-foreground: 150 25% 15%;
+    --accent: 45 95% 55%;
+    --accent-foreground: 150 40% 10%;
 
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 42 80% 95%;
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 40 20% 85%;
-    --input: 40 20% 85%;
-    --ring: 145 60% 25%;
+    --border: 140 20% 88%;
+    --input: 140 20% 88%;
+    --ring: 152 70% 35%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    /* Custom GreenProof colors */
-    --forest: 145 60% 25%;
-    --forest-light: 145 50% 40%;
-    --earth: 35 45% 55%;
-    --earth-light: 40 40% 75%;
-    --gold: 45 85% 55%;
-    --gold-light: 45 75% 70%;
+    /* GreenProof 自然主题色 */
+    --forest: 152 70% 35%;
+    --forest-light: 152 60% 45%;
+    --forest-dark: 152 75% 25%;
+    --leaf: 85 55% 50%;
+    --leaf-light: 85 50% 65%;
+    --earth: 35 50% 45%;
+    --earth-light: 40 45% 65%;
+    --gold: 45 95% 55%;
+    --gold-light: 48 90% 70%;
+    --sky: 200 80% 60%;
+    --sky-light: 200 75% 75%;
+    --water: 195 85% 50%;
     
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(145 60% 25%), hsl(145 50% 35%));
-    --gradient-earth: linear-gradient(135deg, hsl(35 45% 55%), hsl(45 75% 65%));
-    --gradient-hero: linear-gradient(180deg, hsl(42 25% 96%), hsl(145 30% 92%));
+    /* 渐变 */
+    --gradient-forest: linear-gradient(135deg, hsl(152 70% 35%), hsl(85 55% 50%));
+    --gradient-nature: linear-gradient(135deg, hsl(152 70% 35%), hsl(200 80% 60%));
+    --gradient-earth: linear-gradient(135deg, hsl(35 50% 45%), hsl(45 95% 55%));
+    --gradient-hero: linear-gradient(180deg, hsl(140 30% 97%) 0%, hsl(152 40% 92%) 50%, hsl(85 30% 94%) 100%);
+    --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6));
+    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(152 70% 35% / 0.15), transparent 70%);
     
-    /* Shadows */
-    --shadow-eco: 0 4px 20px hsl(145 60% 25% / 0.1);
-    --shadow-card: 0 2px 10px hsl(150 20% 20% / 0.08);
+    /* 阴影 */
+    --shadow-eco: 0 8px 32px hsl(152 70% 35% / 0.15);
+    --shadow-card: 0 4px 24px hsl(150 30% 20% / 0.08);
+    --shadow-glow: 0 0 40px hsl(152 70% 35% / 0.2);
+    --shadow-float: 0 20px 40px hsl(150 30% 20% / 0.12);
     
-    /* Animations */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* 动画 */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
 
   .dark {
-    --background: 150 20% 8%;
-    --foreground: 42 40% 95%;
+    --background: 150 25% 6%;
+    --foreground: 140 30% 95%;
 
-    --card: 150 15% 12%;
-    --card-foreground: 42 40% 95%;
+    --card: 150 20% 10%;
+    --card-foreground: 140 30% 95%;
 
-    --popover: 150 15% 12%;
-    --popover-foreground: 42 40% 95%;
+    --popover: 150 20% 10%;
+    --popover-foreground: 140 30% 95%;
 
-    --primary: 145 55% 45%;
-    --primary-foreground: 150 20% 8%;
+    --primary: 152 65% 50%;
+    --primary-foreground: 150 25% 6%;
 
-    --secondary: 35 35% 35%;
-    --secondary-foreground: 42 40% 95%;
+    --secondary: 85 40% 45%;
+    --secondary-foreground: 140 30% 95%;
 
-    --muted: 150 10% 20%;
-    --muted-foreground: 40 20% 65%;
+    --muted: 150 15% 15%;
+    --muted-foreground: 140 20% 60%;
 
-    --accent: 45 75% 60%;
-    --accent-foreground: 150 20% 8%;
+    --accent: 45 85% 60%;
+    --accent-foreground: 150 25% 6%;
 
-    --destructive: 0 60% 45%;
-    --destructive-foreground: 42 40% 95%;
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 140 30% 95%;
 
-    --border: 150 10% 20%;
-    --input: 150 10% 20%;
-    --ring: 145 55% 45%;
+    --border: 150 15% 18%;
+    --input: 150 15% 18%;
+    --ring: 152 65% 50%;
 
-    /* Custom dark mode colors */
-    --forest: 145 55% 45%;
-    --forest-light: 145 50% 55%;
-    --earth: 35 40% 45%;
-    --earth-light: 40 35% 60%;
-    --gold: 45 80% 60%;
-    --gold-light: 45 70% 75%;
+    --forest: 152 65% 50%;
+    --forest-light: 152 55% 60%;
+    --forest-dark: 152 70% 40%;
+    --leaf: 85 50% 55%;
+    --leaf-light: 85 45% 70%;
+    --earth: 35 45% 50%;
+    --earth-light: 40 40% 65%;
+    --gold: 45 90% 60%;
+    --gold-light: 48 85% 75%;
+    --sky: 200 75% 55%;
+    --sky-light: 200 70% 70%;
+    --water: 195 80% 55%;
     
-    /* Dark gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(145 55% 35%), hsl(145 50% 45%));
-    --gradient-earth: linear-gradient(135deg, hsl(35 40% 40%), hsl(45 70% 55%));
-    --gradient-hero: linear-gradient(180deg, hsl(150 20% 8%), hsl(145 25% 15%));
+    --gradient-forest: linear-gradient(135deg, hsl(152 65% 40%), hsl(85 50% 45%));
+    --gradient-nature: linear-gradient(135deg, hsl(152 65% 40%), hsl(200 75% 50%));
+    --gradient-earth: linear-gradient(135deg, hsl(35 45% 40%), hsl(45 90% 55%));
+    --gradient-hero: linear-gradient(180deg, hsl(150 25% 6%) 0%, hsl(152 30% 12%) 50%, hsl(85 20% 10%) 100%);
+    --gradient-card: linear-gradient(145deg, rgba(30,40,35,0.9), rgba(20,30,25,0.6));
+    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(152 65% 50% / 0.2), transparent 70%);
     
-    /* Dark shadows */
-    --shadow-eco: 0 4px 20px hsl(145 60% 15% / 0.3);
-    --shadow-card: 0 2px 10px hsl(150 30% 5% / 0.4);
+    --shadow-eco: 0 8px 32px hsl(152 65% 20% / 0.3);
+    --shadow-card: 0 4px 24px hsl(0 0% 0% / 0.3);
+    --shadow-glow: 0 0 40px hsl(152 65% 50% / 0.25);
+    --shadow-float: 0 20px 40px hsl(0 0% 0% / 0.4);
   }
 }
 
@@ -115,12 +131,22 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "liga" 1, "calt" 1;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: hsl(var(--forest) / 0.3);
+    color: hsl(var(--foreground));
   }
 }
 
 @layer utilities {
-  .gradient-primary {
-    background: var(--gradient-primary);
+  .gradient-forest {
+    background: var(--gradient-forest);
+  }
+  
+  .gradient-nature {
+    background: var(--gradient-nature);
   }
   
   .gradient-earth {
@@ -131,6 +157,10 @@ All colors MUST be HSL.
     background: var(--gradient-hero);
   }
   
+  .gradient-card {
+    background: var(--gradient-card);
+  }
+  
   .shadow-eco {
     box-shadow: var(--shadow-eco);
   }
@@ -139,24 +169,117 @@ All colors MUST be HSL.
     box-shadow: var(--shadow-card);
   }
   
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .shadow-float {
+    box-shadow: var(--shadow-float);
+  }
+  
   .transition-smooth {
     transition: var(--transition-smooth);
   }
+  
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+
+  /* 玻璃拟态效果 */
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .glass-dark {
+    background: rgba(20, 30, 25, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-forest {
+    background: linear-gradient(135deg, rgba(34, 139, 87, 0.1), rgba(132, 204, 22, 0.05));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(34, 139, 87, 0.2);
+  }
+
+  /* 文字渐变 */
+  .text-gradient-forest {
+    background: var(--gradient-forest);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-nature {
+    background: var(--gradient-nature);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* 发光边框 */
+  .border-glow {
+    position: relative;
+  }
+
+  .border-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: var(--gradient-forest);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.4s ease;
+  }
+
+  .border-glow:hover::before {
+    opacity: 0.5;
+    filter: blur(8px);
+  }
+
+  /* 脉冲光晕 */
+  .pulse-glow {
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+
+  /* 叶子装饰 */
+  .leaf-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5c-5 10-15 15-25 15 5 10 15 20 25 35 10-15 20-25 25-35-10 0-20-5-25-15z' fill='%2322c55e' fill-opacity='0.03'/%3E%3C/svg%3E");
+  }
 }
 
+/* 动画关键帧 */
 @keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+  75% {
+    transform: translateY(-4px) rotate(-1deg);
+  }
+}
+
+@keyframes floatSlow {
   0%, 100% {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-15px);
   }
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -164,10 +287,273 @@ All colors MUST be HSL.
   }
 }
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px hsl(152 70% 35% / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px hsl(152 70% 35% / 0.5), 0 0 60px hsl(85 55% 50% / 0.3);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes leafFall {
+  0% {
+    transform: translateY(-10px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* 动画类 */
 .animate-float {
-  animation: float 3s ease-in-out infinite;
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.6s ease-out forwards;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.8s ease-out forwards;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.8s ease-out forwards;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.5s ease-out forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-rotate {
+  animation: rotate 20s linear infinite;
+}
+
+/* 延迟动画 */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+
+/* 悬停效果 */
+.hover-lift {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-float);
+}
+
+.hover-glow {
+  transition: box-shadow 0.4s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: var(--shadow-glow);
+}
+
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* 按钮样式 */
+.btn-forest {
+  @apply px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300;
+  background: var(--gradient-forest);
+  box-shadow: 0 4px 15px hsl(152 70% 35% / 0.3);
+}
+
+.btn-forest:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px hsl(152 70% 35% / 0.4);
+}
+
+.btn-forest:active {
+  transform: translateY(0);
+}
+
+.btn-outline-forest {
+  @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300;
+  border: 2px solid hsl(var(--forest));
+  color: hsl(var(--forest));
+  background: transparent;
+}
+
+.btn-outline-forest:hover {
+  background: hsl(var(--forest) / 0.1);
+  transform: translateY(-2px);
+}
+
+/* 卡片样式 */
+.card-eco {
+  @apply rounded-2xl p-6;
+  transition: all 0.4s ease;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(34, 139, 87, 0.1);
+  box-shadow: var(--shadow-card);
+}
+
+.card-eco:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-eco);
+  border-color: rgba(34, 139, 87, 0.2);
+}
+
+/* 输入框样式 */
+.input-eco {
+  @apply w-full px-4 py-3 rounded-xl border-2 transition-all duration-300;
+  border-color: hsl(var(--border));
+  background: hsl(var(--background));
+}
+
+.input-eco:focus {
+  outline: none;
+  border-color: hsl(var(--forest));
+  box-shadow: 0 0 0 4px hsl(var(--forest) / 0.1);
+}
+
+/* 徽章样式 */
+.badge-eco {
+  @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium;
+  background: hsl(var(--forest) / 0.1);
+  color: hsl(var(--forest));
+  border: 1px solid hsl(var(--forest) / 0.2);
+}
+
+.badge-gold {
+  @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium;
+  background: hsl(var(--gold) / 0.15);
+  color: hsl(35 70% 35%);
+  border: 1px solid hsl(var(--gold) / 0.3);
+}
+
+/* 分隔线 */
+.divider-eco {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, hsl(var(--forest) / 0.3), transparent);
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--forest) / 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--forest) / 0.5);
+}
+
+/* 背景装饰 */
+.bg-dots {
+  background-image: radial-gradient(hsl(var(--forest) / 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-grid {
+  background-image: 
+    linear-gradient(hsl(var(--forest) / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--forest) / 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
 }

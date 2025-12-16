@@ -173,7 +173,7 @@ export const useFHECounter = (parameters: UseFHECounterParams): UseFHECounterRet
   }, [fheCounter]);
 
   const canGetCount = useMemo(() => {
-    return fheCounter.address && ethersReadonlyProvider && !isRefreshing;
+    return Boolean(fheCounter.address && ethersReadonlyProvider && !isRefreshing);
   }, [fheCounter.address, ethersReadonlyProvider, isRefreshing]);
 
   const refreshCountHandle = useCallback(() => {
@@ -250,7 +250,7 @@ export const useFHECounter = (parameters: UseFHECounterParams): UseFHECounterRet
   //////////////////////////////////////////////////////////////////////////////
 
   const canDecrypt = useMemo(() => {
-    return (
+    return Boolean(
       fheCounter.address &&
       instance &&
       ethersSigner &&
@@ -402,7 +402,7 @@ export const useFHECounter = (parameters: UseFHECounterParams): UseFHECounterRet
   //////////////////////////////////////////////////////////////////////////////
 
   const canIncOrDec = useMemo(() => {
-    return (
+    return Boolean(
       fheCounter.address &&
       instance &&
       ethersSigner &&
