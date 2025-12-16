@@ -23,7 +23,7 @@ Watch our application in action:
 
 ## 🚀 Live Demo
 
-Experience GreenProof Leaf Ledger: [Live Demo](https://your-demo-url.vercel.app)
+Experience GreenProof Leaf Ledger: [Live Demo](https://greenproof-leaf.vercel.app/)
 
 ## 🏗️ Architecture
 
